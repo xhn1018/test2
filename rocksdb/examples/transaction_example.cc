@@ -178,7 +178,7 @@ void do_run4(TransactionDB *db) {
 
      start3 = clock();
     
-     for (int j=0 ;j<1000000;j++){   
+     for (int j=0 ;j<100000;j++){   
      Transaction* txn = db->BeginTransaction(write_options); 
      if(rand()%2==0){
     
