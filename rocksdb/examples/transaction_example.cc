@@ -496,6 +496,14 @@ std::thread t5(do_run4,txn_db);
 std::thread t6(do_run4,txn_db);
 std::thread t7(do_run4,txn_db);
 std::thread t8(do_run4,txn_db);
+std::thread t11(do_run4,txn_db);
+std::thread t12(do_run4,txn_db);
+std::thread t13(do_run4,txn_db);
+std::thread t14(do_run4,txn_db);
+std::thread t15(do_run4,txn_db);
+std::thread t16(do_run4,txn_db);
+std::thread t17(do_run4,txn_db);
+std::thread t18(do_run4,txn_db);
 t1.join();
 t2.join();
 t3.join();
@@ -504,7 +512,14 @@ t5.join();
 t6.join();
 t7.join();
 t8.join();
-
+t11.join();
+t12.join();
+t13.join();
+t14.join();
+t15.join();
+t16.join();
+t17.join();
+t18.join();
    double duration =(double)(end-start1)/CLOCKS_PER_SEC;
     printf("total  %f\n",duration); // 4.015
 
