@@ -167,6 +167,7 @@ void do_run2(TransactionDB *db) {
 
 
 void do_run4(TransactionDB *db) {
+        int count10=0;
      ReadOptions read_options;
      WriteOptions write_options;
      std::string value;
@@ -208,13 +209,13 @@ void do_run4(TransactionDB *db) {
      
      }
      if(s.ok())  {
-       count1++;
+       count10++;
      }
      
      else{ 
       s = txn->Rollback();
        if(s.ok())  {
-       count1++;
+       count10++;
     } //std::cout<<"error"<<std::endl;
     }
      
@@ -222,6 +223,7 @@ void do_run4(TransactionDB *db) {
      end3 =clock();
      double duration =(double)(end3-start3)/CLOCKS_PER_SEC;
      printf("Duratuion 4  : %f\n",duration); // 4.015
+         std::cout<<"Count 10:"<<count10   <<std::endl; // 4.015
     
      
 }
@@ -487,16 +489,21 @@ txn2->Commit();
 
   start1 = clock();
 std::thread t1(do_run4,txn_db);
-std::thread t2(do_run7,txn_db);
-std::thread t3(do_run5,txn_db);
-std::thread t4(do_run8,txn_db);
-//do_run(txn_db);
-
-  t2.join();  
- t3.join(); 
-  
- t1.join(); 
- t4.join();
+std::thread t2(do_run4,txn_db);
+std::thread t3(do_run4,txn_db);
+std::thread t4(do_run4,txn_db);
+std::thread t5(do_run4,txn_db);
+std::thread t6(do_run4,txn_db);
+std::thread t7(do_run4,txn_db);
+std::thread t8(do_run4,txn_db);
+t1.join();
+t2.join();
+t3.join();
+t4.join();
+t5.join();
+t6.join();
+t7.join();
+t8.join();
 
    double duration =(double)(end-start1)/CLOCKS_PER_SEC;
     printf("total  %f\n",duration); // 4.015
