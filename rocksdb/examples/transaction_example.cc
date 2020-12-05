@@ -254,7 +254,7 @@ void do_run4p(TransactionDB *db,int *k1,int *k2) {
 
      txn->Get(read_options, std::to_string(k), &value);
      //s=txn->Put("1", "deasdsaf"); 
-     s=txn->Put("1", "deasdsaf");
+     s=txn->Put("5", "deasdsaf");
      s = txn->Commit();
      }
 
