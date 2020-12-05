@@ -736,7 +736,7 @@ Status DBImpl::WriteImpl2(const WriteOptions& write_options,
         // Each parallel follower is doing each own writes. The leader should
         // also do its own.
         
-        if (w.ShouldWriteToMemtable()) {std::cout<<"should write to memtbale"<<std::endl;
+        if (w.ShouldWriteToMemtable()) {//std::cout<<"should write to memtbale"<<std::endl;
           ColumnFamilyMemTablesImpl column_family_memtables(
 
 

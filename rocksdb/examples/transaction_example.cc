@@ -268,8 +268,8 @@ void do_run4p(TransactionDB *db,int *k1,int *k2) {
      a = std::to_string(j);
      s = txn->Put("1", "deasdsaf");
      s = txn->Put("2", "deasdsaf");
-     s = txn->Put("3", "deasdsaf");
-     s = txn->Put("4", "deasdsaf");
+     s = txn->Put("7", "deasdsaf");
+     s = txn->Put("6", "deasdsaf");
      s = txn->Commit();
      
      }
