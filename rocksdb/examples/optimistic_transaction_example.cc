@@ -53,7 +53,7 @@ void do_run(TransactionDB *db) {
      Status s; 
     
 //mtx.lock();
-     for(int i=0;i<10;i++){
+     for(int i=0;i<1000;i++){
      Transaction* txn = db->BeginTransaction(write_options);
      int k;
      k =rand()%10000;
@@ -66,7 +66,7 @@ void do_run(TransactionDB *db) {
     // txn->Get(read_options, "2", &value);
     // value =std::to_string(atoi(value.c_str()) +1);
     // std::cout<<"put value2  "<<value<<std::endl;
-     s=txn->Put("2", std::to_string(10-i)); 
+     s=txn->Put("2", std::to_string(1000-i)); 
 
      
      s = txn->Commit();
@@ -107,7 +107,7 @@ void do_run1(TransactionDB *db) {
    
     value ="123";  
   //   mtx.lock();
-     for(int i=0;i<10;i++){
+     for(int i=0;i<1000;i++){
 
      Transaction* txn = db->BeginTransaction(write_options);
 
@@ -175,11 +175,11 @@ s = txn2->Commit();
 assert(s.ok());
 
 std::thread t1(do_run,txn_db);
-//std::thread t2(do_run1,txn_db);
+std::thread t2(do_run1,txn_db);
 
 
 t1.join();
-//t2.join();
+t2.join();
 
 
 //do_run(txn_db);

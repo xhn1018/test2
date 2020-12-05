@@ -4,7 +4,7 @@
 //  (found in the LICENSE.Apache file in the root directory).
 
 #ifndef ROCKSDB_LITE
-
+#include <unistd.h>
 #include "rocksdb/db.h"
 #include "rocksdb/options.h"
 #include "rocksdb/slice.h"
@@ -227,6 +227,76 @@ void do_run4(TransactionDB *db) {
     
      
 }
+
+
+
+
+void do_run4p(TransactionDB *db,int *k1,int *k2) {
+        int count10=0;
+     ReadOptions read_options;
+     WriteOptions write_options;
+     std::string value;
+     *k2 =0;
+     Status s; 
+   
+     clock_t start3,end3; 
+
+     start3 = clock();
+    
+     for (int j=0 ;j<100000;j++){   
+     Transaction* txn = db->BeginTransaction(write_options); 
+     if(rand()%2==0){
+    
+     
+               
+     int k;
+     k =rand()%4;
+
+     txn->Get(read_options, std::to_string(k), &value);
+     //s=txn->Put("1", "deasdsaf"); 
+     s=txn->Put("1", "deasdsaf");
+     s = txn->Commit();
+     }
+
+
+     else{
+
+     int k;
+     k =rand()%4;
+     std::string a;
+     //txn->Get(read_optons, "3", &value);
+     a = std::to_string(j);
+     s = txn->Put("1", "deasdsaf");
+     s = txn->Put("2", "deasdsaf");
+     s = txn->Put("3", "deasdsaf");
+     s = txn->Put("4", "deasdsaf");
+     s = txn->Commit();
+     
+     }
+     if(s.ok())  {
+       count10++;
+        *k1 =count10; 
+     }
+     
+     else{ 
+      s = txn->Rollback();
+       if(s.ok())  {
+       count10++;
+       *k1 =count10;
+    } //std::cout<<"error"<<std::endl;
+      else{
+      *k2=*k2+1;
+      } 
+    }
+     
+   }
+     end3 =clock();
+     double duration =(double)(end3-start3)/CLOCKS_PER_SEC;
+     printf("Duratuion 4  : %f\n",duration); // 4.015
+         std::cout<<"Count 10:"<<count10   <<std::endl; // 4.015
+    
+     
+}
 void do_run6(TransactionDB *db) {
      ReadOptions read_options;
      WriteOptions write_options;
@@ -437,6 +507,8 @@ void do_run8(TransactionDB *db) {
      
 }
 int main() {
+     int thread;
+    std::cin>>thread;
   // open DB
   //sim::Sample k;
   //sim::Controller m(1,false,k);
@@ -485,9 +557,34 @@ int main() {
 
 txn2->Commit(); 
  //  end = clock();
-   
+   int k1[100],k2[100];
+std::vector<std::thread> worker_threads;
+
+for(int i=0;i<thread;i++){
+   worker_threads.emplace_back(do_run4p,txn_db,&k1[i],&k2[i]);
+}
+sleep(3);
+//std::cout<<"commit :"<<k1[0]+k1[1]<<std::endl;
+//td::cout<<"abort :"<<k2[0]+k2[1]<<std::endl;
+int commit =0;
+int abort =0;
+for (int i =0;i<thread;i++){
+
+    commit =commit +k1[i];
+    abort =abort +k2[i];
+}
+
+std::cout<<"commit :"<<commit<<std::endl;
+std::cout<<"abort :"<<abort<<std::endl;
+for (int i =0;i<thread;i++){
+
+
+
+worker_threads[i].join();
+}
 
   start1 = clock();
+/*
 std::thread t1(do_run4,txn_db);
 std::thread t2(do_run4,txn_db);
 std::thread t3(do_run4,txn_db);
@@ -520,6 +617,9 @@ t15.join();
 t16.join();
 t17.join();
 t18.join();
+
+
+*/
    double duration =(double)(end-start1)/CLOCKS_PER_SEC;
     printf("total  %f\n",duration); // 4.015
 
