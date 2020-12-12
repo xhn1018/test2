@@ -231,7 +231,7 @@ void do_run4(TransactionDB *db) {
 
 
 
-void do_run4p(TransactionDB *db,int *k1,int *k2) {
+void do_run4p(TransactionDB *db,int *k1,int *k2,int k3) {
         int count10=0;
      ReadOptions read_options;
      WriteOptions write_options;
@@ -250,11 +250,11 @@ void do_run4p(TransactionDB *db,int *k1,int *k2) {
      
                
      int k;
-     k =rand()%4;
+     k =rand()%k3;
 
      txn->Get(read_options, std::to_string(k), &value);
      //s=txn->Put("1", "deasdsaf"); 
-     s=txn->Put("5", "deasdsaf");
+     s=txn->Put("100", "deasdsaf");
      s = txn->Commit();
      }
 
@@ -268,8 +268,8 @@ void do_run4p(TransactionDB *db,int *k1,int *k2) {
      a = std::to_string(j);
      s = txn->Put("1", "deasdsaf");
      s = txn->Put("2", "deasdsaf");
-     s = txn->Put("7", "deasdsaf");
-     s = txn->Put("6", "deasdsaf");
+     s = txn->Put("101", "deasdsaf");
+     s = txn->Put("102", "deasdsaf");
      s = txn->Commit();
      
      }
@@ -507,8 +507,9 @@ void do_run8(TransactionDB *db) {
      
 }
 int main() {
-     int thread;
+     int thread,k3;
     std::cin>>thread;
+    std::cin>>k3;
   // open DB
   //sim::Sample k;
   //sim::Controller m(1,false,k);
@@ -561,7 +562,7 @@ txn2->Commit();
 std::vector<std::thread> worker_threads;
 
 for(int i=0;i<thread;i++){
-   worker_threads.emplace_back(do_run4p,txn_db,&k1[i],&k2[i]);
+   worker_threads.emplace_back(do_run4p,txn_db,&k1[i],&k2[i],k3);
 }
 sleep(3);
 //std::cout<<"commit :"<<k1[0]+k1[1]<<std::endl;
